@@ -1,6 +1,12 @@
 from flask import Flask
+from flask_migrate import Migrate
+
 from app.config import Config
 from app.database.db import db
+
+from app.models.user_model import User
+
+migrate = Migrate()
 
 def create_app():                   # Flask App Factory
 
@@ -9,5 +15,7 @@ def create_app():                   # Flask App Factory
     app.config.from_object(Config)
 
     db.init_app(app)
+
+    migrate.init_app(app,db)
 
     return app
