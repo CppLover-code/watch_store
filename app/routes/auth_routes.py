@@ -4,6 +4,8 @@ from flask_bcrypt import Bcrypt
 from app.database.db import db
 from app.models.user_model import User
 
+from app.utils.jwt_handler import create_token
+
 auth_bp = Blueprint("auth", __name__)
 
 bcrypt = Bcrypt()
@@ -53,3 +55,38 @@ def register():
     return jsonify({
         "message": "User registered succesfully"
     }), 201
+
+@auth_bp.route("/login", methods=["POST"])
+def login():
+
+    data = request.get_json()
+
+    email = data.get("email")
+    password = data.get("password")
+
+    # checking a user
+    user = User.query.filter_by(email=email).first()
+
+    if not user:
+        return jsonify({
+            "ERROR": "Invalid email or password"
+        }), 401
+    
+    # checking a password
+    password_correct = bcrypt.check_password_hash(
+        user.password,
+        password
+    )
+
+    if not password_correct:
+        return jsonify({
+            "ERROR": "Invalid email or password"
+        }),401
+    
+    # JWT creating
+    token = create_token(user.id)
+
+    return jsonify({
+        "MESSAGE": "Login succesful",
+        "token": token
+    }), 200
