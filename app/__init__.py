@@ -10,6 +10,8 @@ from app.models.product_model import Product
 
 from app.routes.auth_routes import auth_bp
 
+from app.seed.products_seed import seed_products
+
 
 migrate = Migrate()
 bcrypt = Bcrypt()
@@ -23,6 +25,9 @@ def create_app():                   # Flask App Factory
     db.init_app(app)
 
     migrate.init_app(app,db)
+
+    with app.app_context():
+        seed_products()
 
     bcrypt.init_app(app)
 

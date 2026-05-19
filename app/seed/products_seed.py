@@ -50,7 +50,7 @@ products = [
 
 def seed_products():
 
-    existing_products = Product.query.first()
+    existing_products = Product.query.first()   # protection against re-adding products
 
     if existing_products:
         print("Products already seeded")
@@ -59,5 +59,16 @@ def seed_products():
     for item in products:
 
         product = Product(
-            
+            brand=item["brand"],
+            model=item["model"],
+            price=item["price"],
+            description=["description"],
+            image_url=["image_url"],
+            stock=["stock"]
         )
+
+        db.session.add(product)
+
+    db.session.commit()
+
+    print("Products seeded successfully")
