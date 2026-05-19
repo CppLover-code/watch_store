@@ -5,7 +5,7 @@ from app.models.product_model import Product
 product_bp = Blueprint("products", __name__)
 
 # GET ALL PRODUCTS
-@product_bp.route("/products", method=["GET"])
+@product_bp.route("/products", methods=["GET"])
 def get_products():
 
     products = Product.query.all()              # получаем список объектов
@@ -18,7 +18,7 @@ def get_products():
     return jsonify(products_list), 200          # превращает список dict → JSON.
 
 # GET PRODUCT BY ID
-@product_bp.route("/products/<int:product_id", method=["GET"])
+@product_bp.route("/products/<int:product_id>", methods=["GET"])
 def get_product(product_id):
 
     product = Product.query.get(product_id)
