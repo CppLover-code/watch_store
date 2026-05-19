@@ -6,8 +6,10 @@ from app.config import Config
 from app.database.db import db
 
 from app.models.user_model import User
+from app.models.product_model import Product
 
 from app.routes.auth_routes import auth_bp
+
 
 migrate = Migrate()
 bcrypt = Bcrypt()
