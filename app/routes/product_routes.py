@@ -1,6 +1,8 @@
-from flask import Blueprint, jsonify
+from flask import Blueprint, jsonify, request
 
 from app.models.product_model import Product
+
+from app.database.db import db
 
 product_bp = Blueprint("products", __name__)
 
@@ -29,3 +31,42 @@ def get_product(product_id):
         }), 404
     
     return jsonify(product.to_dict()), 200
+
+# Adding a product
+@product_bp.route("/products", methods=["POST"])
+def create_product():
+
+    data = request.get_json()                       # Получаем JSON из POST запроса.
+
+    # безопасно достаем поля
+    brand = data.get("brand")
+    model = data.get("model")
+    price = data.get("price")
+    description = data.get("description")
+    image_url = data.get("image_url")
+    stock = data.get("stock")
+
+    # Проверка обязательных полей
+    if not brand or not model or not price:
+        return jsonify({
+            "ERROR": "Missing required fields"
+        }), 400
+    
+    # Создание объекта
+    new_product = Product(
+        brand=brand,
+        model=model,
+        price=price,
+        description=description,
+        image_url=image_url,
+        stock=stock
+    )
+
+    # Сохранение в БД
+    db.session.add(new_product)
+    db.session.commit()
+
+    return jsonify({
+        "MESSAGE": "Product created successfully",
+        "product": new_product.to_dict()
+    }),201
