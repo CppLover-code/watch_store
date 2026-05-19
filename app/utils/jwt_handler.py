@@ -6,10 +6,11 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-def create_token(user_id):
+def create_token(user_id, role):
 
     payload = {
         "user_id": user_id,
+        "role": role,
         "exp": datetime.datetime.utcnow() + datetime.timedelta(hours=24)
     }
 

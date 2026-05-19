@@ -84,7 +84,7 @@ def login():
         }),401
     
     # JWT creating
-    token = create_token(user.id)
+    token = create_token(user.id, user.role)
 
     return jsonify({
         "MESSAGE": "Login succesful",
