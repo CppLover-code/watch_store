@@ -1,6 +1,7 @@
 from app.database.db import db
 from app.models.product_model import Product
 
+# список товаров - список словарей
 products = [
     {
         "brand": "Rolex",
@@ -62,9 +63,9 @@ def seed_products():
             brand=item["brand"],
             model=item["model"],
             price=item["price"],
-            description=["description"],
-            image_url=["image_url"],
-            stock=["stock"]
+            description=item["description"],
+            image_url=item["image_url"],
+            stock=item["stock"]
         )
 
         db.session.add(product)
