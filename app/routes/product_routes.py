@@ -4,6 +4,8 @@ from app.models.product_model import Product
 
 from app.database.db import db
 
+from app.utils.auth_decorator import admin_required
+
 product_bp = Blueprint("products", __name__)
 
 # GET ALL PRODUCTS
@@ -34,6 +36,7 @@ def get_product(product_id):
 
 # Adding a product
 @product_bp.route("/products", methods=["POST"])
+@admin_required                                     # проверка роли админа
 def create_product():
 
     data = request.get_json()                       # Получаем JSON из POST запроса.
