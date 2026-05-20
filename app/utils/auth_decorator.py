@@ -2,7 +2,7 @@ import jwt
 import os
 
 from functools import wraps                     # нужен для создания decorators
-from flask import request, jsonify
+from flask import request, jsonify, g
 
 from dotenv import load_dotenv
 

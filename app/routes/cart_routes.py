@@ -5,7 +5,7 @@ from app.database.db import db
 from app.models.cart_model import CartItem
 from app.models.product_model import Product
 
-from app.utils.current_user import user_required
+from app.utils.auth_decorator import user_required
 
 # ADD TO CART
 cart_bp = Blueprint("cart", __name__)
