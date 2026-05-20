@@ -73,3 +73,59 @@ def create_product():
         "MESSAGE": "Product created successfully",
         "product": new_product.to_dict()
     }),201
+
+# UPDATE PRODUCT
+@product_bp.route("/products/<int:product_id>", methods=["PUT"])
+@admin_required
+def update_product(product_id):
+
+    product = Product.query.get(product_id)
+
+    # проверка существования продукта
+    if not product:
+        return jsonify({
+            "ERROR": "Product not found"
+        }), 404
+    
+    data = request.get_json()
+
+    # обновление полей
+    product.brand = data.get("brand", product.brand)
+    product.model = data.get("model", product.model)
+    product.price = data.get("price", product.price)
+    product.description = data.get(
+        "description",
+        product.description
+    )
+    product.image_url = data.get(
+        "image_url",
+        product.image_url
+    )
+    product.stock = data.get("stock", product.stock)
+
+    db.session.commit()
+
+    return jsonify({
+        "MESSAGE": "Product updated successfully",
+        "product": product.to_dict()
+    }), 200
+
+# DELETE PRODUCT
+@product_bp.route("/products/<int:product_id>", methods=["DELETE"])
+@admin_required
+def delete_product(product_id):
+
+    product = Product.query.get(product_id)
+
+    if not product:
+        return jsonify({
+            "ERROR": "Product not found"
+        }), 404
+    
+    db.session.delete(product)
+
+    db.session.commit()
+
+    return jsonify ({
+        "MESSAGE": "Product deleted successfully"
+    }), 200
