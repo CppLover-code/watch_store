@@ -11,6 +11,7 @@ from app.models.cart_model import CartItem
 
 from app.routes.auth_routes import auth_bp
 from app.routes.product_routes import product_bp
+from app.routes.cart_routes import cart_bp
 
 from app.seed.products_seed import seed_products
 
@@ -36,5 +37,6 @@ def create_app():                   # Flask App Factory
     # Blueprint registration
     app.register_blueprint(auth_bp)
     app.register_blueprint(product_bp)
+    app.register_blueprint(cart_bp)
 
     return app

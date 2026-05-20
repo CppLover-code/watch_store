@@ -8,6 +8,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+# ADMIN
 def admin_required(f):
 
     @wraps(f)
@@ -38,6 +39,47 @@ def admin_required(f):
                 return jsonify({
                     "error": "Admin access required"
                 }), 403
+
+        except Exception as e:
+
+            return jsonify({
+                "error": "Invalid token",
+                "details": str(e)
+            }), 401
+
+        return f(*args, **kwargs)
+
+    return decorated
+
+# USERS
+def user_required(f):
+
+    @wraps(f)
+    def decorated(*args, **kwargs):
+
+        auth_header = request.headers.get("Authorization")
+
+        if not auth_header:
+            return jsonify({
+                "error": "Token is missing"
+            }), 401
+
+        try:
+
+            token = auth_header.split(" ")[1]
+
+            decoded = jwt.decode(
+                token,
+                os.getenv("JWT_SECRET_KEY"),
+                algorithms=["HS256"]
+            )
+
+            if decoded["role"] != "user":
+                return jsonify({
+                    "error": "User access required"
+                }), 403
+
+            g.user_id = decoded["user_id"]
 
         except Exception as e:
 

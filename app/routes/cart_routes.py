@@ -5,12 +5,12 @@ from app.database.db import db
 from app.models.cart_model import CartItem
 from app.models.product_model import Product
 
-from app.utils.current_user import login_required
+from app.utils.current_user import user_required
 
 # ADD TO CART
 cart_bp = Blueprint("cart", __name__)
 @cart_bp.route("/cart/add", methods=["POST"])
-@login_required
+@user_required
 def add_to_cart():
 
     data = request.get_json()
@@ -26,6 +26,12 @@ def add_to_cart():
             "ERROR": "Product not found"
         }), 404
     
+    # Проверка введенного количества
+    if quantity > product.stock:
+        return jsonify({
+            "error": "Not enough stock available"
+        }), 400
+
     # Проверка существования в корзине
     existing_item = CartItem.query.filter_by(
         user_id=g.user_id,
