@@ -26,7 +26,8 @@ class OrderItem(db.Model):
         nullable=False
     )
 
-    price = db.Column(
+    price = db.Column(                      # цена должна сохраниться независимо от того поменяется ли стоимость через время
+                                            # Старый заказ НЕ должен измениться.
         db.Float,
         nullable=False
     )
