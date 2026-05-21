@@ -83,3 +83,27 @@ def get_cart():
         })   
 
     return jsonify(result), 200
+
+# REMOVE FROM CART
+@cart_bp.route("/cart/remove/<int:cart_item_id>", methods=["DELETE"])
+@user_required
+def remove_from_cart(cart_item_id):
+
+    cart_item = CartItem.query.filter_by(
+        id=cart_item_id,
+        user_id=g.user_id
+    ).first()
+
+    # Проверка существования
+    if not cart_item:
+        return jsonify({
+            "ERROR": "Cart item not found"
+        }), 404
+    
+    db.session.delete(cart_item)
+
+    db.session.commit()
+
+    return jsonify({
+        "MESSAGE": "Item removed from cart"
+    }), 200
