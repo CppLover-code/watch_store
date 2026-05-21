@@ -8,6 +8,8 @@ from app.database.db import db
 from app.models.user_model import User
 from app.models.product_model import Product
 from app.models.cart_model import CartItem
+from app.models.order_model import Order
+from app.models.order_item_model import OrderItem
 
 from app.routes.auth_routes import auth_bp
 from app.routes.product_routes import product_bp

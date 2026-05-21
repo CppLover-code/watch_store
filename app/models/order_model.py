@@ -12,7 +12,7 @@ class Order(db.Model):
 
     user_id = db.Column(
         db.Integer,
-        db.ForegnKey("user.id"),
+        db.ForeignKey("users.id"),
         nullable=False
     )
 
@@ -22,7 +22,7 @@ class Order(db.Model):
     )
 
     created_at = db.Column(
-        db.Datetime,
+        db.DateTime,
         default=datetime.utcnow
     )
 
