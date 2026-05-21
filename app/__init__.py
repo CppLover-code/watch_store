@@ -15,6 +15,7 @@ from app.routes.auth_routes import auth_bp
 from app.routes.product_routes import product_bp
 from app.routes.cart_routes import cart_bp
 from app.routes.order_routes import order_bp
+from app.routes.review_routes import review_bp
 
 from app.seed.products_seed import seed_products
 
@@ -42,5 +43,6 @@ def create_app():                   # Flask App Factory
     app.register_blueprint(product_bp)
     app.register_blueprint(cart_bp)
     app.register_blueprint(order_bp)
+    app.register_blueprint(review_bp)
 
     return app
