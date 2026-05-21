@@ -57,3 +57,29 @@ def add_to_cart():
     return jsonify({
         "MESSAGE": "Product added to cart"
     }), 201
+
+# Get current user's shopping cart
+@cart_bp.route("/cart", methods=["GET"])
+@user_required
+def get_cart():
+
+    cart_items = CartItem.query.filter_by(
+        user_id=g.user_id                   # только корзина текущего пользователя
+    ).all()
+
+    result = []
+
+    for item in cart_items:
+        
+        product = Product.query.get(item.product_id)
+
+        result.append({
+            "cart_item_id": item.id,
+            "product_id": product.id,
+            "brand": product.brand,
+            "model": product.model,
+            "price": product.price,
+            "quantity": product.quantity
+        })   
+
+    return jsonify(result), 200
