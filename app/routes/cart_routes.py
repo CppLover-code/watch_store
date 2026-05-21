@@ -79,7 +79,7 @@ def get_cart():
             "brand": product.brand,
             "model": product.model,
             "price": product.price,
-            "quantity": product.quantity
+            "quantity": item.quantity
         })   
 
     return jsonify(result), 200
